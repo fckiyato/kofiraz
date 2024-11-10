@@ -1,0 +1,13 @@
+{% if messages %}
+    <div id="messageModal" class="modal" style="display: block;">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <button id="okButton">OK</button>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}ثبت نام کابر عادی{% endblock title %}
+{% block normal_register %}
+
+<main class="main">
+    <div class="site-breadcrumb" style="background: url(../../../static/img/breadcrumb/02.jpg)">
+        <div class="container">
+            <h2 class="breadcrumb-title">ثبت نام کابر عادی</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home:home' %}">صفحه اصلی</a></li>
+                <li class="active">ثبت نام</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="login-area py-120">
+        <div class="container">
+            <div class="col-md-5 mx-auto">
+                <div class="login-form">
+                    <div class="login-header">
+                        <img src="../../../static/img/logo/kofirazlogo.png" alt>
+                        <p>حساب کاربر عادی خود را ایجاد کنید</p>
+                    </div>
+                    <form action="{% url 'accounts:normal_register'%}" method="post" id="registerForm">
+
+
+                        {% csrf_token %}
+
+                        {% include "messages.html" %}
+
+                        <!-- Normal User Fields -->
+                        <div class="form-group">
+                            <label>اسم کامل</label>
+                            <div class="form-group-icon">
+                                {{ form.fullname }}
+                                <i class="far fa-user" style="color: black;"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>آدرس ایمیل</label>
+                            <div class="form-group-icon">
+                                {{ form.email }}
+                                <i class="far fa-envelope" style="color: black;"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>شماره تلفن همراه</label>
+                            <div class="form-group-icon">
+                                {{ form.phone }}
+                                <i class="far fa-phone" style="color: black;"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password1">رمز عبور</label>
+                            <div class="form-group-icon">
+                                {{ form.password1 }}
+                                <i class="far fa-eye" id="togglePassword1" style="cursor: pointer; color: black;" onclick="togglePasswordVisibility('id_password1', 'togglePassword1')"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password2">رمز عبور</label>
+                            <div class="form-group-icon">
+                                {{ form.password2 }}
+                                <i class="far fa-eye" id="togglePassword2" style="cursor: pointer; color: black;" onclick="togglePasswordVisibility('id_password2', 'togglePassword2')"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-check form-group">
+                            <input class="form-check-input" type="checkbox" value id="agree" required>
+                            <label class="form-check-label" for="agree" required>
+                                من موافقم با <a href="{% url 'home:terms'%}">شرایط استفاده از خدمات.</a>
+                            </label>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="theme-btn" id="registerBtn">
+                                <i class="far fa-paper-plane" style="color: black;"></i> ثبت نام
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            document.querySelector('form').reset(); // Resets all form fields
+        };
+    </script>
+
+    <script>
+        function togglePasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+        
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+
+</main>
+
+{% endblock normal_register %}

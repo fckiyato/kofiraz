@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}سفارش موفق{% endblock title %}
+{% block booking_complete %}
+
+<main class="main">
+
+    <div class="site-breadcrumb" style="background: url(../../../static/img/breadcrumb/02.jpg)">
+        <div class="container">
+            <h2 class="breadcrumb-title">سفری بی خطر به شما آرزومندیم!</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home:home'%}">صفحه اصلی</a></li>
+                <li class="active">تایید رزرو</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="booking-confirm py-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="booking-confirm-content">
+                        <div class="booking-confirm-icon"><i class="far fa-check"></i></div>
+                        <h3>رزرو هتل رولتاک شما تایید شده است.</h3>
+                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شراکت است.</p>
+                        <a href="#" class="theme-btn">اکنون بیشتر رزرو کنید<i class="far fa-arrow-left"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-8 mx-auto mt-5">
+                    <div class="booking-summary">
+                        <h3>خلاصه رزرو (#124586)</h3>
+                        <div class="booking-summary-content">
+                            <div class="row g-5">
+                                <div class="col-lg-6">
+                                    <div class="booking-summary-list">
+                                        <h6>اطلاعات رزرو</h6>
+                                        <ul>
+                                            <li>نوع اتاق <span>کینگ لوکس</span></li>
+                                            <li>اتاق <span>2 اتاق</span></li>
+                                            <li>قیمت هر اتاق <span>250 دلار</span></li>
+                                            <li>بزرگسالان <span>4</span></li>
+                                            <li>کودکان <span>2</span></li>
+                                            <li>بمانید <span>۵ شب</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="booking-summary-list">
+                                        <h6>اطلاعات هتل</h6>
+                                        <ul>
+                                            <li>نام هتل <span>هتل و استراحتگاه رولتاک</span></li>
+                                            <li>آدرس هتل <span>25/B Milford Road، نیویورک</span></li>
+                                            <li>نوع هتل <span>5 ستاره</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="booking-summary-list">
+                                        <h6>تاریخ و زمان رزرو</h6>
+                                        <ul>
+                                            <li>بررسی کنید <span>20 دی 1402 ساعت 10:10 صبح</span></li>
+                                            <li>بررسی <span>20 دی 1402 ساعت 10:10 صبح</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="booking-summary-list">
+                                        <h6>خدمات اضافی</h6>
+                                        <ul>
+                                            <li>نظافت، تحویل فرودگاه</li>
+                                            <li>صبحانه، پارکینگ</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="booking-summary-list">
+                                        <h6>اطلاعات صورتحساب</h6>
+                                        <ul>
+                                            <li>نام <span>نیکولا جانسون</span></li>
+                                            <li>پست الکترونیک <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4e2421203d21200e2b362f233e222b602d2123">[ایمیل محافظت شده است]</a></span></li>
+                                            <li>تلفن <span>0912345678</span></li>
+                                            <li>آدرس <span>تهران میدان آزادی ، خیابان گل ها</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="booking-summary-list">
+                                        <h6>اطلاعات سفارش</h6>
+                                        <ul>
+                                            <li>شناسه سفارش <span>#124586</span></li>
+                                            <li>وضعیت پرداخت <span class="text-success">تکمیل شد</span></li>
+                                            <li>روش پرداخت <span>کارت</span></li>
+                                            <li>مالیات <span>10%</span></li>
+                                            <li class="fw-bold">مجموع پرداخت <span>5 میلیون تومان</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="cancel-booking-note">
+                                        <p>توجه: اگر می خواهید از این پس هزینه لغو رزرو خود را لغو کنید: پنجاه هزار تومان خسارت دارد.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-confirm-btn">
+                            <a href="#" class="theme-btn"><span class="far fa-print"></span>چاپ رزرو</a>
+                            <a href="#" class="theme-btn cancel-booking"><span class="far fa-xmark-circle"></span>لغو رزرو</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock booking_complete %}

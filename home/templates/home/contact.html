@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}تماس با ما{% endblock title %}
+{% block contact %}
+
+<main class="main">
+
+    <div class="site-breadcrumb" style="background: url(../../../static/img/breadcrumb/02.jpg)">
+        <div class="container">
+            <h2 class="breadcrumb-title">تماس با ما</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home:home' %}">صفحه اصلی</a></li>
+                <li class="active">تماس با ما</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="contact-area py-120">
+        <div class="container">
+            <div class="contact-wrapper">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="contact-content">
+                            <div class="contact-info">
+                                <div class="contact-info-icon">
+                                    <i class="fal fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h5>آدرس دفتر</h5>
+                                    <p>25/B میلفورد, نیویورک، آمریکا</p>
+                                </div>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-info-icon">
+                                    <i class="fal fa-phone"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h5>با ما تماس بگیرید</h5>
+                                    <p>0912345678</p>
+                                </div>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-info-icon">
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h5>به ما ایمیل بزنید</h5>
+                                    <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7a13141c153a1f021b170a161f54191517">[ایمیل محافظت شده است]</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-info-icon">
+                                    <i class="fal fa-clock"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h5>باز کردن زمان</h5>
+                                    <p>دوشنبه - شنبه (10 صبح تا 12 ظهر)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 align-self-center">
+                        <div class="contact-form">
+                            <div class="contact-form-header">
+                                <h2>در تماس باشید</h2>
+                                <p>این یک واقعیت ثابت شده است که خواننده از خواندنی ها حواسش پرت می شود
+                                     محتوای یک صفحه کلمات تصادفی شده است که با نگاه کردن به طرح بندی آن، حتی اندکی به نظر نمی رسند. </p>
+                            </div>
+                            <form method="post" action="/mytrip/../../../static/php/contact.php" id="contact-form">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="name" placeholder="اسم شما" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" name="email" placeholder="ایمیل شما" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="subject" placeholder="موضوع تو" required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="message" cols="30" rows="5" class="form-control" placeholder="پیام خود را بنویسید"></textarea>
+                                </div>
+                                <button type="submit" class="theme-btn">ارسال
+                                     پیام<i class="far fa-paper-plane"></i></button>
+                                <div class="col-md-12 mt-3">
+                                    <div class="form-messege text-success"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock contact %}

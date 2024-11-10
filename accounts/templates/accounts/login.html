@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}وارد شوید{% endblock title %}
+{% block login %}
+
+<main class="main">
+
+    <div class="site-breadcrumb" style="background: url(../../../static/img/breadcrumb/02.jpg)">
+        <div class="container">
+            <h2 class="breadcrumb-title">ورود</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home:home'%}">صفحه اصلی</a></li>
+                <li class="active">ورود</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="login-area py-120">
+        <div class="container">
+            <div class="col-md-5 mx-auto">
+                <div class="login-form">
+                    <div class="login-header">
+                        <img src="../../../static/img/logo/kofirazlogo.png" alt>
+                        <p>به حساب کاربری خود وارد شوید</p>
+                    </div>
+                    <form action="{% url 'accounts:login'%}" method="post" id="UserLoginForm">
+
+                        {% csrf_token %}
+
+                        {% include "messages.html" %}
+
+                        <div class="form-group">
+                            <label>شماره تلفن همراه کاربر</label>
+                            <div class="form-group-icon" autocomplete="off">
+                                {{ form.phone }}
+                                <i class="far fa-phone" style="color: black;"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>رمز عبور</label>
+                            <div class="form-group-icon" autocomplete="off">
+                                {{ form.password }}
+                                <i class="far fa-eye" id="togglePassword" style="cursor: pointer; color: black;" onclick="togglePasswordVisibility('id_password', 'togglePassword')"></i>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <a href="{% url 'accounts:reset_password'%}" class="forgot-pass">رمز عبور را فراموش کرده اید؟</a>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="theme-btn"><i class="far fa-sign-in"></i> ورود</button>
+                        </div>
+                    </form>
+                    <div class="login-footer">
+                        <p style="color: black;">اکانت ندارید ؟ <a href="{% url 'accounts:normal_register' %}">عضو شدن.</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        window.onload = function() {
+            document.querySelector('form').reset(); // Resets all form fields
+        };
+    </script>
+
+
+
+
+    <script>
+        function togglePasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+        
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+
+
+
+</main>
+
+
+
+{% endblock login %}

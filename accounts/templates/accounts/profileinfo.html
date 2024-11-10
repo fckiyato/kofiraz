@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}مشخصات کاربری{% endblock title %}
+{% block profileinfo %}
+
+
+<main class="main">
+
+    <div class="site-breadcrumb" style="background: url(../../../static/img/breadcrumb/02.jpg)">
+        <div class="container">
+            <h2 class="breadcrumb-title">مشخصات کاربری</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home:home'%}">صفحه اصلی</a></li>
+                <li class="active">مشخصات کاربری</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="user-profile py-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="user-profile-sidebar">
+                        <div class="user-profile-sidebar-top">
+                            <h4></h4>
+                            <p>{{ form.fullname}}</p>
+                        </div>
+                        <ul class="user-profile-sidebar-list">
+                            <li><a href="{% url 'accounts:profile'%}"><i class="far fa-gauge-high"></i> داشبورد</a></li>
+                            <li><a class="active" href="{% url 'accounts:profileinfo' %}"><i class="far fa-user"></i> مشخصات کاربری</a></li>
+                            <li><a href="{% url 'accounts:profilebooking' %}"><i class="far fa-shopping-bag"></i>سبد خرید</a></li>
+                            <li><a href="{% url 'accounts:profilesetting' %}"><i class="far fa-cog"></i> تنظیمات</a></li>
+                            <li><a href="{% url 'accounts:logout' %}"><i class="far fa-sign-out"></i> خروج</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="user-profile-wrapper">
+                        <div class="user-profile-card">
+                            <h4 class="user-profile-card-title">مشخصات پروفایل</h4>
+                            <div class="col-lg-6">
+                                <div class="profile-info-list">
+                                    <ul>
+                                        {% if agency_name %}
+                                            <li>نام آژانس: <span>{{ agency_name }}</span></li>
+                                            <li>نام مدیر آژانس: <span>{{ agency_owner_name }}</span></li>
+                                            <li>تلفن همراه مدیر آژانس: <span>{{ agency_owner_phone }}</span></li>
+                                        {% else %}
+                                            <li>اسم کامل: <span>{{ fullname }}</span></li>
+                                            <li>ایمیل: <span>{{ email }}</span></li>
+                                            <li>شماره: <span>{{ phone }}</span></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+{% endblock profileinfo %}

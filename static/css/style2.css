@@ -1,0 +1,188 @@
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0);
+    min-width: 160px;
+    box-shadow: 0 4px 8px rgba(250, 250, 250, 0.261);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 8px 16px;
+    color: #000;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f000;
+}
+
+
+
+
+
+
+
+
+/* Style for the dropdown in mobile view */
+.login-register-mobile {
+    display: none; /* Initially hidden, managed by media queries */
+}
+
+@media (max-width: 768px) {
+    /* Show the login/register or username dropdown on mobile screens */
+    .login-register-mobile {
+        display: block;
+    }
+
+    .nav-item.dropdown .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #00505d;
+        font-size: 16px;
+        padding: 10px;
+        border: none;
+        background-color: #ffffff;
+        cursor: pointer;
+    }
+
+    .nav-item.dropdown .nav-link:hover {
+        background-color: #ffffff;
+        color: #016f80;
+    }
+
+    /* Dropdown menu style */
+    .dropdown-menu {
+        background-color: #989797;
+        border: 1px solid #8e8e8e;
+        border-radius: 0.25rem;
+        margin-top: 10px;
+        min-width: 200px;
+        box-shadow: 0 0.25rem 0.5rem rgb(0, 119, 95);
+    }
+
+    /* Animation effect */
+    .dropdown-menu.fade-down {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+    }
+
+    .dropdown-menu.fade-down.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Dropdown item styles */
+    .dropdown-item {
+        color: #000;
+        padding: 10px 20px;
+        text-align: left;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-item:hover {
+        background-color: #ffffff00;
+        color: #ffffff;
+    }
+
+    .dropdown-item i {
+        margin-right: 10px;
+    }
+}
+
+/* Optional: Remove focus outline for better aesthetics */
+.nav-link:focus, .dropdown-item:focus {
+    outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+#messageModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
+    background-color: rgba(0, 0, 0, 0.5); /* Background overlay */
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modal-content li {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+#closeModal {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+button#okButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button#okButton:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+.footer-section {
+    display: flex;
+    align-items: center; /* Center the image vertically */
+    justify-content: flex-start; /* Align to the left */
+    padding: 20px; /* Add some padding */
+    background-color: #f8f8f8; /* Light background color */
+}
+
+.footer-section img {
+    max-width: 100%; /* Make the image responsive */
+    height: auto; /* Maintain aspect ratio */
+}

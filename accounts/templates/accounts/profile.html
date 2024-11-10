@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}پروفایل کاربری{% endblock title %}
+{% block profile %}
+
+<main class="main">
+
+    <div class="site-breadcrumb" style="background: url(../../../static/img/breadcrumb/02.jpg)">
+        <div class="container">
+            <h2 class="breadcrumb-title">پروفایل کاربری</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home:home'%}">صفحه اصلی</a></li>
+                <li class="active">پروفایل</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="user-profile py-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="user-profile-sidebar">
+                        <div class="user-profile-sidebar-top">
+                            <h4></h4>
+                            <p>{{form.username}}</p>
+                        </div>
+                        <ul class="user-profile-sidebar-list">
+                            <li><a class="active" href="{% url 'accounts:profile'%}"><i class="far fa-gauge-high"></i> داشبورد</a></li>
+                            <li><a href="{% url 'accounts:profileinfo' %}"><i class="far fa-user"></i> مشخصات کاربری</a></li>
+                            <li><a href="{% url 'accounts:profilebooking' %}"><i class="far fa-shopping-bag"></i>سبد خرید</a></li>
+                            <li><a href="{% url 'accounts:profilesetting' %}"><i class="far fa-cog"></i> تنظیمات</a></li> 
+                            <li><a href="{% url 'accounts:logout' %}"><i class="far fa-sign-out"></i> خروج</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="user-profile-wrapper">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="dashboard-widget dashboard-widget-color-1">
+                                    <div class="dashboard-widget-info">
+                                        <h1>120</h1>
+                                        <span>خرید موفق</span>
+                                    </div>
+                                    <div class="dashboard-widget-icon">
+                                        <i class="fal fa-shopping-bag"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="dashboard-widget dashboard-widget-color-2">
+                                    <div class="dashboard-widget-info">
+                                        <h1>26</h1>
+                                        <span>رزرو های در حال بررسی</span>
+                                    </div>
+                                    <div class="dashboard-widget-icon">
+                                        <i class="fal fa-loader"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="user-profile-card profile-booking">
+                                    <h4 class="user-profile-card-title">رزرو های اخیر</h4>
+                                    <div class="table-responsive">
+                                        <table class="table text-nowrap">
+                                            <thead>
+                                            <tr>
+                                                <th>نه</th>
+                                                <th>شناسه رزرو</th>
+                                                <th>نوع</th>
+                                                <th>تاریخ</th>
+                                                <th>قیمت</th>
+                                                <th>وضعیت</th>
+                                                <th>عمل</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>01.</td>
+                                                <td><b>#12453</b></td>
+                                                <td>هتل</td>
+                                                <td> 22 مهر ، 1402</td>
+                                                <td>11000 تومان</td>
+                                                <td><span class="badge badge-success">تکمیل شده</span></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>02.</td>
+                                                <td><b>#12453</b></td>
+                                                <td>پرواز</td>
+                                                <td> 22 مهر ، 1402</td>
+                                                <td>11000 تومان</td>
+                                                <td><span class="badge badge-success">تکمیل شده</span></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>03.</td>
+                                                <td><b>#12453</b></td>
+                                                <td>فعالیت</td>
+                                                <td> 22 مهر ، 1402</td>
+                                                <td>11000 تومان</td>
+                                                <td><span class="badge badge-warning">انتظار</span></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>04.</td>
+                                                <td><b>#12453</b></td>
+                                                <td>ماشین</td>
+                                                <td> 22 مهر ، 1402</td>
+                                                <td>11000 تومان</td>
+                                                <td><span class="badge badge-success">تکمیل شده</span></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>05.</td>
+                                                <td><b>#12453</b></td>
+                                                <td>کشتی</td>
+                                                <td> 22 مهر ، 1402</td>
+                                                <td>11000 تومان</td>
+                                                <td><span class="badge badge-danger">کنسل شده</span></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock profile %}
