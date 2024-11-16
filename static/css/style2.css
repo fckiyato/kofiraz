@@ -24,6 +24,38 @@
 
 
 
+#guest-info-container {
+    display: flex;
+    flex-direction: column; /* Stack form fields vertically */
+    gap: 20px; /* Space between each guest pack */
+}
+
+.guest-info-pack {
+    display: flex;
+    flex-direction: column; /* Stack form fields within each guest pack */
+    gap: 15px; /* Space between individual fields inside each guest pack */
+    border: 1px solid #ddd; /* Border around the guest info pack */
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.remove-guest-btn {
+    background: none;
+    border: none;
+    color: #f44336;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.remove-guest-btn:hover {
+    color: #d32f2f;
+}
+
+
+
+
 
 
 

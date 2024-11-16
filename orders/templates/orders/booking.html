@@ -18,16 +18,17 @@
         <div class="container">
             <div class="row justify-content-center">
 
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <div class="booking-widget">
                         <h4 class="booking-widget-title" style="color: #7167FF;">تذکر: پرکردن تمامی فیلد ها اجباری بوده و به حروف انگلیسی و بدون غلط املایی وارد نمایید. لطفا در نوشتن نام کامل خود بیشتر دقت نمایید.</h4>
                         <div class="booking-form">
-                            <form action="#">
-
+                            <form action="#" method="post">
+                                {% csrf_token %}
+                                {% include "messages.html" %}
                                 <div class="search-form">
                                     <div class="tour-search-wrapper">
                                         <div class="row">
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-4">
                                                 <div class="form-group">
                                                     <div class="search-form-date">
                                                         <div class="search-form-journey">
@@ -40,7 +41,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-4">
                                                 <div class="form-group">
                                                     <div class="search-form-date">
                                                         <div class="search-form-return">
@@ -53,33 +54,34 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-4">
                                                 <div class="form-group dropdown passenger-box">
                                                     <div class="passenger-class" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <label>چند شب و چند نفر</label>
                                                         <div class="form-group-icon">
                                                             <div class="passenger-total">
-                                                                <span class="passenger-total-room">{{form.night.value}}</span> شب,
-                                                                <span class="passenger-total-amount">{{form.adult.value}}</span> میهمان
+                                                                <span class="passenger-total-room" id="total-night">{{ form.night.value|default:0 }}</span> شب,
+                                                                <span class="passenger-total-amount" id="total-amount">{{ form.adult.value|default:0 }}</span> میهمان
                                                             </div>
-
                                                         </div>
-                                                        <p class="passenger-class-name">{{room.room_type}}</p>
+                                                        <p class="passenger-class-name">{{ room.room_type }}</p>
                                                     </div>
                                                     <div class="dropdown-menu dropdown-menu-end">
+                                                        <!-- Adult Field -->
                                                         <div class="dropdown-item">
                                                             <div class="passenger-item">
                                                                 <div class="passenger-info">
                                                                     <h6 style="color: #4F4B8B;">بزرگسالان</h6>
-                                                                    <p style="color: #4F4B8B;">بززرگتر از ۵ سال</p>
+                                                                    <p style="color: #4F4B8B;">بزرگتر از ۵ سال</p>
                                                                 </div>
                                                                 <div class="passenger-qty">
-                                                                    <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
-                                                                    {{form.adult}}
-                                                                    <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                                    <button type="button" class="minus-btn" onclick="changeQuantity('adult', -1)"><i class="far fa-minus"></i></button>
+                                                                    <input type="text" id="adult-qty" value="{{ form.adult.value|default:0 }}" oninput="updateTotals()"/>
+                                                                    <button type="button" class="plus-btn" onclick="changeQuantity('adult', 1)"><i class="far fa-plus"></i></button>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!-- Children Field -->
                                                         <div class="dropdown-item">
                                                             <div class="passenger-item">
                                                                 <div class="passenger-info">
@@ -87,21 +89,22 @@
                                                                     <p style="color: #4F4B8B;">تا ۵ سال</p>
                                                                 </div>
                                                                 <div class="passenger-qty">
-                                                                    <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
-                                                                    {{form.children}}
-                                                                    <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                                    <button type="button" class="minus-btn" onclick="changeQuantity('children', -1)"><i class="far fa-minus"></i></button>
+                                                                    <input type="text" id="children-qty" value="{{ form.children.value|default:0 }}" oninput="updateTotals()"/>
+                                                                    <button type="button" class="plus-btn" onclick="changeQuantity('children', 1)"><i class="far fa-plus"></i></button>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!-- Nights Field -->
                                                         <div class="dropdown-item">
                                                             <div class="passenger-item">
                                                                 <div class="passenger-info">
                                                                     <h6 style="color: #4F4B8B;">تعداد شب</h6>
                                                                 </div>
                                                                 <div class="passenger-qty">
-                                                                    <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
-                                                                    {{form.night}}
-                                                                    <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                                    <button type="button" class="minus-btn" onclick="changeQuantity('night', -1)"><i class="far fa-minus"></i></button>
+                                                                    <input type="text" id="night-qty" value="{{ form.night.value|default:0 }}" oninput="updateTotals()"/>
+                                                                    <button type="button" class="plus-btn" onclick="changeQuantity('night', 1)"><i class="far fa-plus"></i></button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -112,385 +115,48 @@
                                     </div>
                                 </div>
 
+                                <input type="hidden" name="passenger_data" id="passenger_data">
+                                
                                 <div class="row">
-                                    <div class="col-lg-4">
-                                        {% if user.is_agency %}
-                                        <div class="form-group">
-                                            <label>نام آژانس</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="نام آژانس" value="{{user.fullname}}">
-                                                <i class="far fa-user"></i>
-                                            </div>
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                    <hr/>
-                                    <h5 class="booking-widget-title" style="color: #7167FF;">مشخصات سرگروه</h5>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>نام و نام خانوادگی</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="نام و نام خانوادگی">
-                                                <i class="far fa-user"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="تاریخ تولد">
-                                                <i class="far fa-user"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>شماره کد ملی</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="شماره کد ملی">
-                                                <i class="far fa-user"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="شماره پاسپورت">
-                                                <i class="far fa-user"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>آدرس ایمیل</label>
-                                            <div class="form-group-icon">
-                                                <input type="email" class="form-control" placeholder="ادرس ایمیل">
-                                                <i class="far fa-envelopes"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>شماره تلفن همراه</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="شماره تلفن همراه">
-                                                <i class="far fa-phone"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <hr/>
-
-
-                                    <h5 class="booking-widget-title" style="color: #7167FF;">مشخصات مسافرین</h5>
-                                    <div id="guest-info-container" class="row">
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>نام کامل مسافر</label>
-                                                <div class="form-group-icon">
-                                                    {{form.passfullname}}
-                                                    <i class="far fa-map-location-dot"></i>
+                                    <h5 class="booking-widget-title" style="color: #7167FF;">
+                                        مشخصات مسافرین
+                                        <button type="button" id="add-guest-btn" class="btn btn-primary" style="background-color: #7167FF; border-color: #7167FF;">
+                                            <i class="fas fa-plus"></i> افزودن مسافر
+                                        </button>
+                                    </h5>
+                                    <div id="guest-info-container" class="form-class row">
+                                        <div class="guest-info-pack col-lg-12">
+                                            <div class="row">
+                                                <div class="form-group col-lg-4 col-12">
+                                                    <label>نام کامل</label>
+                                                    <div class="form-group-icon">
+                                                        {{form.fullname}}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-4 col-12">
+                                                    <label>شماره پاسپورت</label>
+                                                    <div class="form-group-icon">
+                                                        {{form.passnum}}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-4 col-12">
+                                                    <label>تاریخ تولد به میلادی</label>
+                                                    <div class="form-group-icon">
+                                                        {{form.burndate}}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>شماره پاسپورت مسافر</label>
-                                                <div class="form-group-icon">
-                                                    {{form.passnum}}
-                                                    <i class="far fa-map-location-dot"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>تاریخ تولد</label>
-                                                <div class="form-group-icon">
-                                                    {{form.burndate}}
-                                                    <i class="far fa-map-location-dot"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>نام کامل مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passfullname}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>شماره پاسپورت مسافر</label>
-                                            <div class="form-group-icon">
-                                                {{form.passnum}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>تاریخ تولد</label>
-                                            <div class="form-group-icon">
-                                                {{form.burndate}}
-                                                <i class="far fa-map-location-dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
-                                    <hr/>
-                                    <hr/>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>روش پرداخت</label>
-                                            <div class="form-group-icon">
-                                                <select class="select">
-                                                    <option value>کارت به کارت</option>
-                                                    <option value="1">نقدی در شعبه اصلی</option>
-                                                </select>
-                                                <i class="far fa-globe"></i>
-                                            </div>
+                                                <!-- Trash icon to remove this guest pack -->
+                                            <button type="button" class="remove-guest-btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>سن و سال</label>
-                                            <div class="form-group-icon">
-                                                <input type="text" class="form-control" placeholder="سن و سال">
-                                                <i class="fab fa-pagelines"></i>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
+                                    <hr/>
+                                    <hr/>
                                 </div>
                                 <div class="text-end mt-40">
                                     <a href="#" class="theme-btn d-block">رزرو را تایید کنید<i class="far fa-arrow-left"></i></a>
@@ -521,22 +187,20 @@
                             <h5>اطلاعات سفارش</h5>
                             <ul>
                                 <li style="color: white;">نوع اتاق : <span style="color: white;">{{room.room_type}}</span></li>
-                                <li style="color: white;">قیمت هر شب/نفر اقامت : <span style="color: white;">{{room.price_per_night}} {{room.currency}} </span></li>
-                                <li style="color: white;">تعدادکل مسافران : <span style="color: white;">4 نفر</span></li>
-                                <li style="color: white;">اقامت : <span style="color: white;">5 شب</span></li>
+                                <li style="color: white;">قیمت هر شب/نفر اقامت : <span id="price-display" style="color: white;">{{room.price_per_night}} {{room.currency}} </span></li>
+                                <li style="color: white;">تعدادکل مسافران : <span id="booking-total-guests" style="color: white;">0</span></li>
+                                <li style="color: white;">اقامت : <span id="booking-total-nights" style="color: white;">0 شب</span></li>
                             </ul>
                         </div>
+                        <div id="price-per-night" data-price="{{ room.price_per_night }}" hidden></div>
                         <div class="booking-order-info">
                             <div class="booking-pay-info">
                                 <h5>پرداخت رزرو</h5>
                                 <ul>
-                                    <li style="color: white;">مالیات : <span style="color: white;">56 تومان</span></li>
-                                    <li style="color: white;">مجموع قابل سفارشات : <span style="color: white;">50 هزارتومان</span></li>
-                                    <li style="color: white;" class="order-total">شما پرداخت می کنید: <span style="color: white;">51 هزارتومان</span></li>
+                                    <li style="color: white;">مالیات برکل : <span id="tax-amount" style="color: white;">10 درصد کل مبلغ</span></li>
+                                    <li style="color: white;">مجموع سفارشات : <span id="order-total" style="color: white;">0 {{room.currency}}</span></li>
+                                    <li style="color: white;" class="order-total">مبلغ قابل پرداخت :<span id="payable-amount" style="color: white;">0 {{room.currency}}</span></li>
                                 </ul>
-                            </div>
-                            <div class="text-end mt-40">
-                                <a href="#" class="theme-btn d-block">رزرو را تایید کنید<i class="far fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </div>
@@ -545,61 +209,176 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Function to handle increment and decrement for a given input element
-            function handleQuantityChange(inputElement, increment) {
-                let currentValue = parseInt(inputElement.value) || 0;
-                currentValue += increment;
+        // Initialize a counter to uniquely identify each guest section
+    let guestCounter = 1;
         
-                // Ensure the value doesn't go below 0
-                if (currentValue < 0) {
-                    currentValue = 0;
-                }
+    document.getElementById('add-guest-btn').addEventListener('click', function() {
+        // Get the guest info container
+        var guestInfoContainer = document.getElementById('guest-info-container');
+    
+        // Create a new guest pack template (clone the first or create a new template)
+        var newGuestPack = document.querySelector('.guest-info-pack').cloneNode(true);
         
-                inputElement.value = currentValue; // Update the input value
-                updatePassengerAndNightTotals(); // Update the total guests and nights
-            }
+        // Clear input fields in the new guest pack to avoid duplicating values
+        newGuestPack.querySelectorAll('input').forEach(function(input) {
+            input.value = ''; // Clear the value
+        });
+    
+        // Assign a unique ID to each input within the new guest section
+        newGuestPack.id = `guest-info-pack-${guestCounter}`;
+        newGuestPack.querySelectorAll('input').forEach(function(input) {
+            let inputType = input.getAttribute('name');
+            input.setAttribute('name', `${inputType}_${guestCounter}`);
+            input.setAttribute('id', `${inputType}_${guestCounter}`);
+        });
+    
+        // Add event listener for removing the guest section
+        const removeButton = newGuestPack.querySelector('.remove-guest-btn');
+        removeButton.addEventListener('click', function() {
+            newGuestPack.remove();
+            updatePassengerData();
+        });
+    
+        // Append the new guest pack to the container
+        guestInfoContainer.appendChild(newGuestPack);
+    
+        // Increment the counter for unique IDs
+        guestCounter++;
+    
+        // Update the hidden field data
+        updatePassengerData();
+    });
+    
+    function updatePassengerData() {
+        const guests = [];
+        const guestForms = document.querySelectorAll('.guest-info-pack');
         
-            // Function to update the total number of guests and nights
-            function updatePassengerAndNightTotals() {
-                const adultCount = parseInt(document.querySelector('.passenger-adult').value) || 0;
-                const childrenCount = parseInt(document.querySelector('.passenger-children').value) || 0;
-                const nightCount = parseInt(document.querySelector('.passenger-room').value) || 0;
-        
-                const totalGuests = adultCount + childrenCount;
-        
-                // Update total display for guests and nights
-                document.querySelector('.passenger-total-amount').textContent = totalGuests;
-                document.querySelector('.passenger-total-room').textContent = nightCount;
-            }
-        
-            // Remove any existing event listeners before adding new ones
-            document.querySelectorAll('.minus-btn, .plus-btn').forEach(button => {
-                button.replaceWith(button.cloneNode(true));
-            });
-        
-            // Attach new event listeners
-            document.querySelectorAll('.passenger-qty').forEach(container => {
-                const minusBtn = container.querySelector('.minus-btn');
-                const plusBtn = container.querySelector('.plus-btn');
-                const inputElement = container.querySelector('input.qty-amount');
-        
-                // Minus button event
-                minusBtn.addEventListener('click', function () {
-                    handleQuantityChange(inputElement, -1);
+        guestForms.forEach((guest, index) => {
+            const fullname = guest.querySelector(`[name='passenger_fullname_${index + 1}']`).value;
+            const passnum = guest.querySelector(`[name='passenger_passnum_${index + 1}']`).value;
+            const burndate = guest.querySelector(`[name='passenger_burndate_${index + 1}']`).value;
+            
+            if (fullname && passnum && burndate) {
+                guests.push({
+                    fullname,
+                    passnum,
+                    burndate
                 });
-        
-                // Plus button event
-                plusBtn.addEventListener('click', function () {
-                    handleQuantityChange(inputElement, 1);
-                });
-            });
-        
-            // Initialize the total count
-            updatePassengerAndNightTotals();
+            }
         });
         
+        document.getElementById('passenger_data').value = JSON.stringify(guests);
+    }
+    
+    // Optional: Clear all guest packs
+    document.getElementById('clear-all-btn').addEventListener('click', function() {
+        const guestInfoContainer = document.getElementById('guest-info-container');
+        const allGuestPacks = guestInfoContainer.querySelectorAll('.guest-info-pack');
+        
+        allGuestPacks.forEach((guestPack, index) => {
+            if (index !== 0) {
+                guestPack.remove();
+            }
+        });
+        updatePassengerData();
+    });
     </script>
+
+    <script>
+        // Function to change quantity (increment or decrement)
+        function changeQuantity(type, delta) {
+            let input = document.getElementById(`${type}-qty`);
+            let currentValue = parseInt(input.value) || 0;
+    
+            // Ensure the value does not go below 0
+            currentValue += delta;
+            if (currentValue < 0) {
+                currentValue = 0;
+            }
+    
+            // Set the updated value back to the input field
+            input.value = currentValue;
+    
+            // Update totals dynamically
+            updateTotals();
+        }
+    
+        // Function to update the displayed totals
+        function updateTotals() {
+            let adultCount = parseInt(document.getElementById('adult-qty').value) || 0;
+            let childrenCount = parseInt(document.getElementById('children-qty').value) || 0;
+            let nightCount = parseInt(document.getElementById('night-qty').value) || 0;
+    
+            // Calculate total guests (adults + children)
+            let totalGuests = adultCount + childrenCount;
+    
+            // Update the total amount and night values in the main area
+            document.getElementById('total-amount').textContent = totalGuests;
+            document.getElementById('total-night').textContent = nightCount;
+    
+            // Update the total guests and nights in the booking info summary
+            document.getElementById('booking-total-guests').textContent = totalGuests;
+            document.getElementById('booking-total-nights').textContent = nightCount;
+        }
+    
+        // Initialize totals on page load
+        updateTotals();
+    </script>
+
+    <script>
+        function updateTotals() {
+            // Retrieve guest and night counts
+            let adultCount = parseInt(document.getElementById('adult-qty').value) || 0;
+            let childrenCount = parseInt(document.getElementById('children-qty').value) || 0;
+            let nightCount = parseInt(document.getElementById('night-qty').value) || 0;
+    
+            // Calculate total guests
+            let totalGuests = adultCount + childrenCount;
+    
+            // Retrieve price per night from the data attribute
+            let pricePerNightElement = document.getElementById('price-per-night');
+            let pricePerNight = parseFloat(pricePerNightElement.dataset.price) || 0;
+    
+            // Calculate total price for booking
+            let totalPrice = totalGuests * nightCount * pricePerNight;
+    
+            // Calculate tax (10% of total price)
+            let tax = totalPrice * 0.05;
+    
+            // Calculate payable amount (total price + tax)
+            let orderTotal = totalPrice + tax;
+    
+            // Update guest and night counts in both summary and booking areas
+            document.getElementById('booking-total-guests').textContent = totalGuests;
+            document.getElementById('booking-total-nights').textContent = nightCount;
+    
+            // Update totals in the booking order info
+            document.getElementById('tax-amount').textContent = tax.toFixed(0) + " {{ room.currency }}";
+            document.getElementById('order-total').textContent = totalPrice.toFixed(0) + " {{ room.currency }}";
+            document.getElementById('payable-amount').textContent = orderTotal.toFixed(0) + " {{ room.currency }}";
+    
+            // Debugging log
+            console.log(`Guests: ${totalGuests}, Nights: ${nightCount}, Total: ${totalPrice}, Tax: ${tax}, Payable: ${orderTotal}`);
+        }
+    
+        // Function to handle quantity changes and trigger total updates
+        function changeQuantity(type, delta) {
+            let input = document.getElementById(`${type}-qty`);
+            let currentValue = parseInt(input.value) || 0;
+    
+            // Ensure the value does not go below 0
+            currentValue += delta;
+            if (currentValue < 0) currentValue = 0;
+    
+            // Set updated value and update totals
+            input.value = currentValue;
+            updateTotals();
+        }
+    
+        // Initialize totals on page load
+        updateTotals();
+    </script>
+
 </main>
 
 

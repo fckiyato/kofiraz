@@ -21,6 +21,149 @@
         </div>
     </div>
 
+    <div class="search-area">
+        <div class="container">
+            <div class="search-wrapper">
+                <div class="search-box hotel-search">
+                    <div class="search-form">
+                        <form action="#">
+                            <div class="hotel-search-wrapper">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>مقصد</label>
+                                            <div class="form-group-icon">
+                                                <input type="text" name="destination" class="form-control" value="تهران">
+                                                <i class="fal fa-earth-americas"></i>
+                                            </div>
+                                            <p>ایران ، تهران</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div class="search-form-date">
+                                                <div class="search-form-journey">
+                                                    <label>بررسی کنید</label>
+                                                    <div class="form-group-icon">
+                                                        <input type="text" name="journey-date" class="form-control date-picker journey-date">
+                                                        <i class="fal fa-calendar-days"></i>
+                                                    </div>
+                                                    <p class="journey-day-name"></p>
+                                                </div>
+                                                <div class="search-form-return">
+                                                    <label>پرداخت</label>
+                                                    <div class="form-group-icon">
+                                                        <input type="text" name="return-date" class="form-control date-picker return-date">
+                                                    </div>
+                                                    <p class="return-day-name"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group dropdown passenger-box">
+                                            <div class="passenger-class" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <label>اتاق ها، مهمانان</label>
+                                                <div class="form-group-icon">
+                                                    <div class="passenger-total">
+                                                        <span class="passenger-total-room">2</span> اتاق,
+                                                        <span class="passenger-total-amount">2</span> میهمان
+                                                    </div>
+                                                    <i class="fal fa-user-plus"></i>
+                                                </div>
+                                                <p class="passenger-class-name">اتاق دو نفره</p>
+                                            </div>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <div class="dropdown-item">
+                                                    <div class="passenger-item">
+                                                        <div class="passenger-info">
+                                                            <h6>بزرگسالان</h6>
+                                                            <p>+12 سال</p>
+                                                        </div>
+                                                        <div class="passenger-qty">
+                                                            <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
+                                                            <input type="text" name="adult" class="qty-amount passenger-adult" value="2" readonly>
+                                                            <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-item">
+                                                    <div class="passenger-item">
+                                                        <div class="passenger-info">
+                                                            <h6>کودکان</h6>
+                                                            <p>2 تا 12 سال</p>
+                                                        </div>
+                                                        <div class="passenger-qty">
+                                                            <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
+                                                            <input type="text" name="children" class="qty-amount passenger-children" value="0" readonly>
+                                                            <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-item">
+                                                    <div class="passenger-item">
+                                                        <div class="passenger-info">
+                                                            <h6>نوزاد</h6>
+                                                            <p>کمتر از 2 سال</p>
+                                                        </div>
+                                                        <div class="passenger-qty">
+                                                            <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
+                                                            <input type="text" name="infant" class="qty-amount passenger-infant" value="0" readonly>
+                                                            <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-item">
+                                                    <div class="passenger-item">
+                                                        <div class="passenger-info">
+                                                            <h6>اتاق ها</h6>
+                                                        </div>
+                                                        <div class="passenger-qty">
+                                                            <button type="button" class="minus-btn"><i class="far fa-minus"></i></button>
+                                                            <input type="text" name="room" class="qty-amount passenger-room" value="2" readonly>
+                                                            <button type="button" class="plus-btn"><i class="far fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-item">
+                                                    <h6 class="mb-3 mt-2">نوع اتاق</h6>
+                                                    <div class="passenger-class-info">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" value="Single Room" name="room-type" id="room-type1">
+                                                            <label class="form-check-label" for="room-type1">
+                                                                اتاق تک نفره
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" checked type="radio" value="Double Room" name="room-type" id="room-type2">
+                                                            <label class="form-check-label" for="room-type2">
+                                                                اتاق دو نفره
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" value="Deluxe Room" name="room-type" id="room-type3">
+                                                            <label class="form-check-label" for="room-type3">
+                                                                اتاق لوکس
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="search-btn">
+                                    <button type="submit" class="theme-btn"><span class="far fa-search"></span>جستجو کردن</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <div class="counter-area pt-80 pb-80">
         <div class="container">

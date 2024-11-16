@@ -1,20 +1,11 @@
 from django import forms
-from .models import Booking, Guest
+from .models import Booking, Passenger
 from datetime import date
 from django.core.exceptions import ValidationError
 from datetime import timedelta
 
 class BookingForm(forms.ModelForm):
-    
-    
-    agency = forms.CharField(
-        max_length = 50,
-        widget = forms.TextInput(attrs = {
-            'class':'form-control',
-            'placeholder':'نام آژانس'
-        })
-    )
-    passfullname = forms.CharField(
+    fullname = forms.CharField(
         widget= forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'نام و نام خانوادگی'
@@ -28,13 +19,6 @@ class BookingForm(forms.ModelForm):
             'type':'date',
         }, format="%Y/%m/%d")
     )
-    natid = forms.IntegerField(
-        widget = forms.NumberInput(attrs = {
-            'class':'form-control',
-            'placeholder':'شماره کد ملی',
-            'autocomplete':'off',
-        })
-    )
     passnum = forms.CharField(
         widget = forms.TextInput(attrs={
             'class':'form-control',
@@ -42,21 +26,6 @@ class BookingForm(forms.ModelForm):
             'autocomplete':'off',
         })
     )
-    emailaddr = forms.EmailField(
-        widget = forms.EmailInput(attrs={
-            'class':'form-control',
-            'placeholder':'آدرس ایمیل'
-        })
-    )
-    phonenum = forms.CharField(
-        max_length=11,
-        widget = forms.TextInput(attrs={
-            'class':'form-control',
-            'placeholder':'شماره تلفن همراه',
-            'autocomplete':'off',
-        })
-    )
-    
     adult = forms.IntegerField(
         widget = forms.NumberInput(attrs={
             'class':'dropdown-item',
@@ -81,14 +50,14 @@ class BookingForm(forms.ModelForm):
             'class':'dropdown-item',
             'placeholder':'تاریخ ورود',
             'type': 'date',
-        },format="%Y/%m/%d")
+        })
     )
     checkout = forms.DateField(
         widget = forms.DateInput(attrs={
             'class':'dropdown-item',
             'placeholder':'تاریخ خروج',
-            'type': 'date'
-        },format="%Y/%m/%d")
+            'type': 'date',
+        })
     )
     
     tax = forms.IntegerField(
@@ -96,7 +65,7 @@ class BookingForm(forms.ModelForm):
             'class':'bookkng-pay-info',
         })
     )
-    sumprice = forms.IntegerField(
+    totalprice = forms.IntegerField(
         widget = forms.NumberInput(attrs={
             'class':'booking-pay-info'
         })
@@ -104,9 +73,10 @@ class BookingForm(forms.ModelForm):
     
     class Meta:
         model = Booking
-        fields = ['agency', 'passfullname', 'natid', 'emailaddr', 'phonenum',
-                  'passnum','burndate', 'adult', 'children', 'night',
-                  'tax', 'checkin', 'checkout']
+        fields = [
+            'fullname','passnum','burndate', 'adult', 'children', 'night',
+            'checkin', 'checkout','tax', 'totalprice'
+            ]
         
     def clean_checkin(self):
         checkin = self.cleaned_data.get("checkin")
@@ -122,17 +92,12 @@ class BookingForm(forms.ModelForm):
         if night <= 0:
             self.add_error("night", "تعداد شب‌ها باید بیشتر از صفر باشد")
 
-        if checkin and night:
-            expected_checkout = checkin + timedelta(days=night)
-            if "checkout" in cleaned_data:
-                checkout = cleaned_data["checkout"]
-                if checkout != expected_checkout:
-                    self.add_error("checkout", "تاریخ خروج باید مطابق تعداد شب‌های رزرو باشد")
-
         adult = cleaned_data.get("adult")
         children = cleaned_data.get("children")
+        
         if adult < 1:
             self.add_error("adult", "باید حداقل یک بزرگسال باشد")
+            
         if adult > 10 or children > 10:
             raise ValidationError("تعداد مسافران نمی‌تواند بیشتر از 10 باشد")
         
@@ -140,7 +105,7 @@ class BookingForm(forms.ModelForm):
 #-----------------------------------------------------
 class GuestForm(forms.ModelForm):
     class Meta:
-        model = Guest
+        model = Passenger
         fields = ['fullname', 'passport_number', 'birthdate']
 #-----------------------------------------------------
 class GuestFormSet(forms.BaseFormSet):
@@ -151,12 +116,9 @@ class GuestFormSet(forms.BaseFormSet):
         guest_count = len(self.forms)
         
         if guest_count == 0:
-            raise forms.ValidationError("At least one guest is required.")
-        max_guests = 10
-        if guest_count > max_guests:
-            raise forms.ValidationError(f"Cannot add more than {max_guests} guests.")
+            raise forms.ValidationError("حداقل تعداد مسافر نمیتواند کمتر از یک نفر باشد")
         
         for form in self.forms:
             if not form.cleaned_data.get('fullname') or not form.cleaned_data.get('passport_number') or not form.cleaned_data.get('birthdate'):
-                raise forms.ValidationError("All fields for each guest must be filled out.")
+                raise forms.ValidationError("همه فیلد ها باید تکمیل شوند.")
         return self.cleaned_data
